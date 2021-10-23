@@ -10,6 +10,16 @@ public  class Herbivorous  extends Animal {
     }
 
     /**
+     * eat member of forest
+     * @param memberOfForest
+     * @return if member of forest die
+  */
+    @Override
+     protected boolean processEating(MemberOfForest memberOfForest) {
+     return true;
+     }
+
+     /**
      * check on eatable
      * @param memberOfForest who eat
      * @return true if may be eat
@@ -19,5 +29,15 @@ public  class Herbivorous  extends Animal {
         if(memberOfForest.getMass()!=0){
             return memberOfForest instanceof Plant;
         }else return false;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Herbivorous{" +
+                "alive=" + alive +
+                ", species='" + species + '\'' +
+                ", mass=" + mass +
+                '}';
     }
 }

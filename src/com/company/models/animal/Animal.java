@@ -11,6 +11,7 @@ public abstract class Animal extends MemberOfForest {
         super(species, mass);
         this.alive=true;
     }
+    protected abstract boolean processEating(MemberOfForest memberOfForest);
 
     /**
      * animal find food
@@ -18,19 +19,21 @@ public abstract class Animal extends MemberOfForest {
      * @return array of object 0 index : MemberOfForest, 1 index : bool
      */
 
-    public ArrayList<Object> findFood(ArrayList<MemberOfForest> forest) {
+    public MemberOfForest findFood(ArrayList<MemberOfForest> forest) {
         for (MemberOfForest item:forest) {
-            if(this.eatable(item))
-            {
-                ArrayList<Object> out =new ArrayList<Object>(2);
-                out.add(0,item);
-                out.add(1,item.attacked(this.mass/10));
-                return out;
+            if (this.eatable(item)) {
+                return  item;
             }
         }
-        return new ArrayList<>(2);
+        return  null;
     }
+    public  void eating(MemberOfForest memberOfForest){
+        if(memberOfForest == null){
+            return;
+        }
+        if(processEating(memberOfForest)) memberOfForest.setMass(this.mass/10);
 
+    }
     /**
      * check on eatable
      * @param memberOfForest who eat
@@ -44,8 +47,8 @@ public abstract class Animal extends MemberOfForest {
      * @return true if die
      */
     @Override
-    public Boolean attacked(int mass) {
-        this.die();
+    public Boolean setMass(int mass) {
+        this.mass-=mass;
         this.alive=false;
         return  true;
     }

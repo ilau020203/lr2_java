@@ -4,10 +4,23 @@ import com.company.models.MemberOfForest;
 import com.company.models.animal.Animal;
 import org.jetbrains.annotations.NotNull;
 
-public  class Predator extends Animal {
+import java.util.Random;
+
+public class Predator extends Animal {
     public Predator(String species, int mass) {
         super(species, mass);
     }
+    /**
+     * eat member of forest
+     * @param memberOfForest
+     * @return if member of forest die
+     */
+    @Override
+    protected boolean processEating(MemberOfForest memberOfForest) {
+        Random random= new Random();
+        return random.nextBoolean();
+    }
+
 
     /**
      * check on eatable
@@ -16,12 +29,19 @@ public  class Predator extends Animal {
      */
     @Override
     public boolean eatable(@NotNull MemberOfForest memberOfForest) {
-        if(memberOfForest.getMass()!=0){
-            if(memberOfForest.getMass()<this.mass){
-                return memberOfForest instanceof Animal;
-            }
-            else return false;
+        return (memberOfForest instanceof Animal&&memberOfForest.getMass()!=0&&memberOfForest.getMass()<this.mass);
+    }
+    protected class other{
 
-        }else return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Predator{" +
+                "alive=" + alive +
+                ", species='" + species + '\'' +
+                ", mass=" + mass +
+                '}';
     }
 }
+

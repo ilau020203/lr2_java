@@ -1,6 +1,8 @@
 package com.company.models;
 
-public abstract class MemberOfForest {
+import java.io.Serializable;
+
+public abstract class MemberOfForest implements Serializable {
     protected String species;
     protected int mass;
 
@@ -18,9 +20,9 @@ public abstract class MemberOfForest {
     }
 
 
-    public  void die(){
 
-        this.mass=0;
+    public  Boolean setMass(int mass) {
+        this.mass = mass;
+        return  false;
     }
-    public  abstract Boolean attacked(int mass);
 }

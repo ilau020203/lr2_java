@@ -14,9 +14,9 @@ public abstract class Plant extends MemberOfForest {
      * @return true if die
      */
     @Override
-    public Boolean attacked(int mass) {
+    public Boolean setMass(int mass) {
         if(mass>this.mass){
-            this.die();
+
             return true;
 
         }
