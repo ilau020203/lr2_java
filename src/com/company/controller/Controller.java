@@ -6,8 +6,10 @@ import com.company.models.Model;
 import com.company.models.animal.Animal;
 import com.company.models.animal.types.Herbivorous;
 import com.company.models.animal.types.Predator;
+import com.company.models.interfaces.IModel;
 import com.company.models.plant.types.Grass;
 import com.company.models.plant.types.Tree;
+import com.company.models.utils.ErrorController;
 import com.company.views.Log;
 import com.company.views.View;
 
@@ -18,12 +20,14 @@ import java.util.Scanner;
 
 
 public class Controller {
-    Model model;
+    IModel model;
     Properties properties;
     Boolean authorized;
     Scanner scanner;
-    public Controller(Model model, Properties properties){
+    ErrorController errorController;
+    public Controller(IModel model, Properties properties,ErrorController errorController){
         this.model=model;
+        this.errorController=errorController;
         this.properties=properties;
         scanner=new Scanner(System.in);
         authorized=false;
@@ -71,8 +75,34 @@ public class Controller {
                 Log.tryWrite("конец автотеста");
 
                 break;
+            case 5:
+                randomStart();
+                break;
         }
         return  true;
+    }
+    private void randomStart(){
+        for(int i = 10 ; i < 1000000;i*=10){
+            System.out.println("asdf");
+            Log.alwaysWrite("start "+ i +" length "+properties.get("model")+" add");
+            long start = System.currentTimeMillis();
+            randomAdd(i);
+            Log.alwaysWrite("finish "+ i +" length "+properties.get("model")+" add " + (System.currentTimeMillis()- start) );
+            Log.alwaysWrite("start "+ i +" length "+properties.get("model")+" delete");
+            start = System.currentTimeMillis();
+            randomDelete(i);
+            Log.alwaysWrite("finish "+ i +" length "+properties.get("model")+" delete "+ (System.currentTimeMillis()- start));
+        }
+    }
+
+
+    private void randomAdd(int n){
+        model.addRandom(n);
+    }
+    private void randomDelete(int n){
+        for(int i = 0; i <n; i++){
+            model.delete(0);
+        }
     }
     private void addMemberOfForest(){
         View.typeMemberOfForest();
@@ -82,7 +112,6 @@ public class Controller {
         View.massa();
         int massa = Integer.parseInt(scanner.nextLine());
         switch (key) {
-
             case 1:
                 model.addMemberOfForest(new Predator(special,massa));
                 break;
@@ -95,6 +124,7 @@ public class Controller {
             case 4:
                 model.addMemberOfForest(new Grass(special,massa));
                 break;
+
         }
     }
     private void findFood(){
@@ -113,7 +143,6 @@ public class Controller {
         }catch (Exception e) {
             System.err.println("Ошибка - "+e.getMessage());
             Log.alwaysWrite("Ошибка - "+e.getMessage());
-
         }
     }
 }

@@ -8,23 +8,26 @@ import com.company.models.plant.types.Tree;
 import com.company.models.utils.RandomString;
 import com.company.views.Log;
 
-import java.io.*;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
-public class Model implements IModel {
-    ArrayList<MemberOfForest> forest;
+public class ModelLinkedList implements IModel {
+    LinkedList<MemberOfForest> forest;
 
     String path;
-    public Model(int n,String path  )  {
+    public ModelLinkedList(int n,String path  )  {
 
         this.path=path;
         if(n==-1){
-            forest= new ArrayList<MemberOfForest>();
+            forest= new LinkedList<MemberOfForest>();
             try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))
             {
-                forest=((ArrayList<MemberOfForest>)ois.readObject());
+                forest=((LinkedList<MemberOfForest>)ois.readObject());
             }
             catch(Exception ex){
                 System.out.println(ex.getMessage());
@@ -32,7 +35,7 @@ public class Model implements IModel {
             }
             Log.tryWrite("db is loaded");
         }else {
-            forest = new ArrayList<MemberOfForest>(n);
+            forest = new LinkedList<MemberOfForest>();
         }
     }
     public void addMemberOfForest(MemberOfForest memberOfForest){
@@ -61,8 +64,6 @@ public class Model implements IModel {
     public  void delete(int i){
         forest.remove(i);
     }
-
-
     public void addRandom(int count ){
         RandomString randomString =(new RandomString());
 
@@ -88,8 +89,6 @@ public class Model implements IModel {
         }
     }
     public ArrayList<MemberOfForest> getForest() {
-        return forest;
+        return new ArrayList<MemberOfForest>(forest);
     }
-
 }
-

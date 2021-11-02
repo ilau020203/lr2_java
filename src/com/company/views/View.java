@@ -44,6 +44,7 @@ public class View {
         if(root){
             System.out.println("4 запустить автотест");
         }
+        System.out.println("5 random test");
         System.out.println("0 выход");
 
     }
