@@ -25,6 +25,9 @@ public class Controller {
     Boolean authorized;
     Scanner scanner;
     ErrorController errorController;
+    public ArrayList<Long> outInput;
+    public ArrayList<Long> outDelete;
+
     public Controller(IModel model, Properties properties,ErrorController errorController){
         this.model=model;
         this.errorController=errorController;
@@ -32,6 +35,8 @@ public class Controller {
         scanner=new Scanner(System.in);
         authorized=false;
         Log.isRun=properties.get("debug").equals("true");
+        outInput=new ArrayList<>();
+        outDelete=new ArrayList<>();
     }
     public boolean swichMenu()  {
         if(!authorized){
@@ -82,7 +87,7 @@ public class Controller {
         return  true;
     }
     private void randomStart(){
-        for(int i = 10 ; i < 1000000;i*=10){
+        for(int i = 10 ; i < 10000000;i*=10){
             System.out.println("asdf");
             Log.alwaysWrite("start "+ i +" length "+properties.get("model")+" add");
             long start = System.currentTimeMillis();
@@ -92,6 +97,21 @@ public class Controller {
             start = System.currentTimeMillis();
             randomDelete(i);
             Log.alwaysWrite("finish "+ i +" length "+properties.get("model")+" delete "+ (System.currentTimeMillis()- start));
+        }
+    }
+    public void autoTest(){
+        for(int i = 10 ; i < 1000000;i*=10){
+            Log.alwaysWrite("start "+ i +" length "+properties.get("model")+" add");
+            long start = System.nanoTime();
+            randomAdd(i);
+            outInput.add(System.nanoTime()- start);
+            Log.alwaysWrite("finish "+ i +" length "+properties.get("model")+" add " + (System.nanoTime()- start) );
+            Log.alwaysWrite("start "+ i +" length "+properties.get("model")+" delete");
+            start = System.nanoTime();
+            randomDelete(i);
+            outDelete.add(System.nanoTime()- start);
+            Log.alwaysWrite("finish "+ i +" length "+properties.get("model")+" delete "+ (System.nanoTime()- start));
+
         }
     }
 
